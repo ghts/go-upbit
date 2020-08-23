@@ -101,7 +101,7 @@ func NewClient(httpClient *http.Client, opt *ClientOptions) (*Client, error) {
 
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
 	if ctx == nil {
-		return nil, errors.New("context must be non-nil")
+		ctx = context.TODO()
 	}
 
 	req = req.WithContext(ctx)
