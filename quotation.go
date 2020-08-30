@@ -92,3 +92,12 @@ func (s *CandleService) Ticker(ctx context.Context, markets []string) ([]*Ticker
 
 	return tickers, nil, nil
 }
+
+func (s *CandleService) TickerMarket(ctx context.Context, market string) (*Ticker, *http.Response, error) {
+	lst, resp, err := s.Ticker(ctx, []string{market})
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return lst[0], resp, err
+}

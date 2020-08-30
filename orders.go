@@ -31,6 +31,10 @@ func (s *OrderService) cancelOrder(ctx context.Context, queryString string) (*Or
 	return order, resp, nil
 }
 
+func (s *OrderService) CancelOrder(ctx context.Context, uuid string) (*Order, *http.Response, error) {
+	return CancelOrderByUUID(ctx, uuid)
+}
+
 func (s *OrderService) CancelOrderByUUID(ctx context.Context, uuid string) (*Order, *http.Response, error) {
 	params := url.Values{}
 	params.Add("uuid", uuid)
@@ -83,6 +87,10 @@ func (s *OrderService) GetOrderByUUID(ctx context.Context, uuid string) (*Order,
 	qs := params.Encode()
 
 	return s.getOrder(ctx, qs)
+}
+
+func (s *OrderService) GetOrder(ctx context.Context, uuid string) (*Order, *http.Response, error) {
+	return s.GetOrderByUUID(ctx, uuid)
 }
 
 func (s *OrderService) ListOrders(ctx context.Context, listOpt *OrderListOptions) ([]*Order, *http.Response, error) {
