@@ -10,12 +10,14 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
+	"moul.io/http2curl"
 )
 
 const (
@@ -28,6 +30,7 @@ type ClientOptions struct {
 	AccessKey string
 	SecretKey string
 	ServerURL string
+	Debug     bool
 }
 
 func ClientOptionsFromEnv() *ClientOptions {
@@ -35,6 +38,7 @@ func ClientOptionsFromEnv() *ClientOptions {
 		SecretKey: os.Getenv("UPBIT_OPEN_API_SECRET_KEY"),
 		ServerURL: os.Getenv("UPBIT_OPEN_API_SERVER_URL"),
 		AccessKey: os.Getenv("UPBIT_OPEN_API_ACCESS_KEY"),
+		Debug:     false,
 	}
 }
 
@@ -47,6 +51,7 @@ type Client struct {
 	baseURL    *url.URL
 	common     service
 
+	debug     bool
 	accessKey string
 	secretKey string
 
@@ -56,6 +61,12 @@ type Client struct {
 	Deposits  *DepositService
 	Markets   *MarketService
 	Candles   *CandleService
+}
+
+func (c *Client) Debug() *Client {
+	debugc := c
+	debugc.debug = true
+	return debugc
 }
 
 type (
@@ -87,6 +98,7 @@ func NewClient(httpClient *http.Client, opt *ClientOptions) (*Client, error) {
 		secretKey:  opt.SecretKey,
 		baseURL:    baseURL,
 		httpClient: httpClient,
+		debug:      opt.Debug,
 	}
 
 	c.common.client = c
@@ -102,6 +114,14 @@ func NewClient(httpClient *http.Client, opt *ClientOptions) (*Client, error) {
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
 	if ctx == nil {
 		ctx = context.TODO()
+	}
+
+	if c.debug {
+		cmd, err := http2curl.GetCurlCommand(req)
+		if err != nil {
+			return nil, err
+		}
+		log.Println(cmd)
 	}
 
 	req = req.WithContext(ctx)
@@ -125,12 +145,28 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 		if w, ok := v.(io.Writer); ok {
 			io.Copy(w, resp.Body)
 		} else {
-			decErr := json.NewDecoder(resp.Body).Decode(v)
-			if decErr == io.EOF {
-				decErr = nil
-			}
-			if decErr != nil {
-				err = decErr
+			if c.debug {
+				body, rerr := ioutil.ReadAll(resp.Body)
+				if err != nil {
+					err = rerr
+				} else {
+					log.Println(string(body))
+					decErr := json.NewDecoder(bytes.NewBuffer(body)).Decode(v)
+					if decErr == io.EOF {
+						decErr = nil
+					}
+					if decErr != nil {
+						err = decErr
+					}
+				}
+			} else {
+				decErr := json.NewDecoder(resp.Body).Decode(v)
+				if decErr == io.EOF {
+					decErr = nil
+				}
+				if decErr != nil {
+					err = decErr
+				}
 			}
 		}
 	}
