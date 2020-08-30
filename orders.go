@@ -32,7 +32,7 @@ func (s *OrderService) cancelOrder(ctx context.Context, queryString string) (*Or
 }
 
 func (s *OrderService) CancelOrder(ctx context.Context, uuid string) (*Order, *http.Response, error) {
-	return CancelOrderByUUID(ctx, uuid)
+	return s.CancelOrderByUUID(ctx, uuid)
 }
 
 func (s *OrderService) CancelOrderByUUID(ctx context.Context, uuid string) (*Order, *http.Response, error) {
