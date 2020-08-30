@@ -169,4 +169,3 @@ func (s *OrderService) Chances(ctx context.Context, market string) (*Chance, *ht
 
 	return chance, nil, nil
 }
-

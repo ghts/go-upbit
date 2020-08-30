@@ -207,6 +207,7 @@ const (
 	KRW_ATOM  = "KRW-ATOM"
 	KRW_TT    = "KRW-TT"
 	KRW_CRE   = "KRW-CRE"
+	KRW_CRO   = "KRW-CRO"
 	BTC_VDX   = "BTC-VDX"
 	KRW_SOLVE = "KRW-SOLVE"
 	BTC_ATOM  = "BTC-ATOM"

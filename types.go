@@ -69,22 +69,22 @@ const (
 )
 
 type Order struct {
-	UUID            string    `json:"uuid"`
-	Side            string    `json:"side" header:"side"`
-	OrdType         string    `json:"ord_type" header:"ord_type" `
-	Price           string    `json:"price" header:"price"`
-	AvgPrice        string    `json:"avg_price" `
-	State           string    `json:"state" header:"state"`
-	Market          string    `json:"market" header:"market"`
-	CreatedAt       time.Time `json:"created_at" header:"created_at"`
-	Volume          string    `json:"volume" header:"volume"`
-	RemainingVolume string    `json:"remaining_volume" header:"remaining_volume"`
-	ReservedFee     string    `json:"reserved_fee"`
-	RemainingFee    string    `json:"remaining_fee"`
-	PaidFee         string    `json:"paid_fee"`
-	Locked          string    `json:"locked"`
-	ExecutedVolume  string    `json:"executed_volume"`
-	TradesCount     int       `json:"trades_count"`
+	UUID            string     `json:"uuid"`
+	Side            OrderSide  `json:"side"`
+	OrdType         string     `json:"ord_type"`
+	Price           string     `json:"price"`
+	AvgPrice        string     `json:"avg_price" tabulate:"-"`
+	State           OrderState `json:"state"`
+	Market          string     `json:"market"`
+	CreatedAt       time.Time  `json:"created_at"`
+	Volume          string     `json:"volume"`
+	RemainingVolume string     `json:"remaining_volume"`
+	ReservedFee     string     `json:"reserved_fee" tabulate:"-"`
+	RemainingFee    string     `json:"remaining_fee" tabulate:"-"`
+	PaidFee         string     `json:"paid_fee" tabulate:"-"`
+	Locked          string     `json:"locked" tabulate:"-"`
+	ExecutedVolume  string     `json:"executed_volume" tabulate:"-"`
+	TradesCount     int        `json:"trades_count" tabulate:"-"`
 }
 
 type MarketCode struct {
@@ -181,10 +181,10 @@ type Chance struct {
 	MakerBidFee string `json:"maker_bid_fee"`
 	MakerAskFee string `json:"maker_ask_fee"`
 	Market      struct {
-		ID         string   `json:"id"`
-		Name       string   `json:"name"`
-		OrderTypes []string `json:"order_types"`
-		OrderSides []string `json:"order_sides"`
+		ID         string      `json:"id"`
+		Name       string      `json:"name"`
+		OrderTypes []string    `json:"order_types"`
+		OrderSides []OrderSide `json:"order_sides"`
 		Bid        struct {
 			Currency  string  `json:"currency"`
 			PriceUnit float64 `json:"price_unit"`
@@ -234,7 +234,7 @@ type Candle struct {
 }
 
 type CoinAddress struct {
-	Currency         string  `json:"currency"`
-	DepositAddress   string  `json:"deposit_address"`
+	Currency         string `json:"currency"`
+	DepositAddress   string `json:"deposit_address"`
 	SecondaryAddress string `json:"secondary_address"`
 }
