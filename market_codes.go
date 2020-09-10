@@ -261,6 +261,7 @@ const (
 	KRW_XTZ   = "KRW-XTZ"
 	KRW_BORA  = "KRW-BORA"
 	BTC_JST   = "BTC-JST"
+	KRW_JST   = "KRW-JST"
 	BTC_CHR   = "BTC-CHR"
 	BTC_DAD   = "BTC-DAD"
 )

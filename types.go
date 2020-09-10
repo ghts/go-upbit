@@ -6,19 +6,15 @@ import (
 	"time"
 )
 
-type OrderState string
-
 const (
-	OrderStateWait   OrderState = "wait"
-	OrderStateDone   OrderState = "done"
-	OrderStateCancel OrderState = "cancel"
+	OrderStateWait   string = "wait"
+	OrderStateDone   string = "done"
+	OrderStateCancel string = "cancel"
 )
 
-type OrderKind string
-
 const (
-	OrderKindNormal OrderKind = "normal"
-	OrderKindWatch  OrderKind = "watch"
+	OrderKindNormal string = "normal"
+	OrderKindWatch  string = "watch"
 )
 
 type Account struct {
@@ -31,60 +27,56 @@ type Account struct {
 }
 
 type OrderRequest struct {
-	Market     string    `url:"market,omitempty"`
-	Side       OrderSide `url:"side,omitempty"`
-	Volume     string    `url:"volume,omitempty"`
-	Price      string    `url:"price,omitempty"`
-	OrdType    OrdType   `url:"ord_type,omitempty"`
-	Identifier string    `url:"identifier,omitempty"`
+	Market     string `url:"market,omitempty"`
+	Side       string `url:"side,omitempty"`
+	Volume     string `url:"volume,omitempty"`
+	Price      string `url:"price,omitempty"`
+	OrdType    string `url:"ord_type,omitempty"`
+	Identifier string `url:"identifier,omitempty"`
 }
 
 type OrderListOptions struct {
-	Market      string       `url:"market,omitempty"`
-	State       OrderState   `url:"state,omitempty"`
-	States      []OrderState `url:"states,brackets"`
-	UUIDs       []string     `url:"uuids,brackets"`
-	Identifiers []string     `url:"identifiers,brackets"`
-	Kind        OrderKind    `url:"kind,omitempty"`
-	Page        int          `url:"page,omitempty"`
-	Limit       int          `url:"limit,omitempty"`
-	OrderBy     string       `url:"order_by,omitempty"`
+	Market      string   `url:"market,omitempty"`
+	State       string   `url:"state,omitempty"`
+	States      []string `url:"states,brackets"`
+	UUIDs       []string `url:"uuids,brackets"`
+	Identifiers []string `url:"identifiers,brackets"`
+	Kind        string   `url:"kind,omitempty"`
+	Page        int      `url:"page,omitempty"`
+	Limit       int      `url:"limit,omitempty"`
+	OrderBy     string   `url:"order_by,omitempty"`
 }
 
-type OrderSide string
-
 const (
-	SideBid  OrderSide = "bid" // Buying, 매수
-	SideBuy  OrderSide = "bid" // Buying, 매수
-	SideAsk  OrderSide = "ask" // Selling, 매도
-	SideSell OrderSide = "ask" // Selling, 매도
+	SideBid  string = "bid" // Buying, 매수
+	SideBuy  string = "bid" // Buying, 매수
+	SideAsk  string = "ask" // Selling, 매도
+	SideSell string = "ask" // Selling, 매도
 )
 
-type OrdType string
-
 const (
-	OrdTypeLimit  OrdType = "limit"  // Limit Order, 지정가
-	OrdTypePrice  OrdType = "price"  // Market Price Order(Bid), 시장가(매수)
-	OrdTypeMarket OrdType = "market" // Market Price Order(Ask), 시장가(매도)
+	OrdTypeLimit  string = "limit"  // Limit Order, 지정가
+	OrdTypePrice  string = "price"  // Market Price Order(Bid), 시장가(매수)
+	OrdTypeMarket string = "market" // Market Price Order(Ask), 시장가(매도)
 )
 
 type Order struct {
-	UUID            string     `json:"uuid"`
-	Side            OrderSide  `json:"side"`
-	OrdType         string     `json:"ord_type"`
-	Price           string     `json:"price"`
-	AvgPrice        string     `json:"avg_price" tabulate:"-"`
-	State           OrderState `json:"state"`
-	Market          string     `json:"market"`
-	CreatedAt       time.Time  `json:"created_at"`
-	Volume          string     `json:"volume"`
-	RemainingVolume string     `json:"remaining_volume"`
-	ReservedFee     string     `json:"reserved_fee" tabulate:"-"`
-	RemainingFee    string     `json:"remaining_fee" tabulate:"-"`
-	PaidFee         string     `json:"paid_fee" tabulate:"-"`
-	Locked          string     `json:"locked" tabulate:"-"`
-	ExecutedVolume  string     `json:"executed_volume" tabulate:"-"`
-	TradesCount     int        `json:"trades_count" tabulate:"-"`
+	UUID            string    `json:"uuid"`
+	Side            string    `json:"side"`
+	OrdType         string    `json:"ord_type"`
+	Price           string    `json:"price"`
+	AvgPrice        string    `json:"avg_price" tabulate:"-"`
+	State           string    `json:"state"`
+	Market          string    `json:"market"`
+	CreatedAt       time.Time `json:"created_at"`
+	Volume          string    `json:"volume"`
+	RemainingVolume string    `json:"remaining_volume"`
+	ReservedFee     string    `json:"reserved_fee" tabulate:"-"`
+	RemainingFee    string    `json:"remaining_fee" tabulate:"-"`
+	PaidFee         string    `json:"paid_fee" tabulate:"-"`
+	Locked          string    `json:"locked" tabulate:"-"`
+	ExecutedVolume  string    `json:"executed_volume" tabulate:"-"`
+	TradesCount     int       `json:"trades_count" tabulate:"-"`
 }
 
 type MarketCode struct {
@@ -181,10 +173,10 @@ type Chance struct {
 	MakerBidFee string `json:"maker_bid_fee"`
 	MakerAskFee string `json:"maker_ask_fee"`
 	Market      struct {
-		ID         string      `json:"id"`
-		Name       string      `json:"name"`
-		OrderTypes []string    `json:"order_types"`
-		OrderSides []OrderSide `json:"order_sides"`
+		ID         string   `json:"id"`
+		Name       string   `json:"name"`
+		OrderTypes []string `json:"order_types"`
+		OrderSides []string `json:"order_sides"`
 		Bid        struct {
 			Currency  string  `json:"currency"`
 			PriceUnit float64 `json:"price_unit"`
